@@ -5,28 +5,127 @@
 using namespace std;
 
 template<typename T>
-struct ListNode {
-	ListNode* ptr;
-	T Num;
-};
-
-template<typename T>
-void InitList(ListNode<T>* ptr) {
-	if (nullptr != ptr)
+class List
+{
+	class ListNode
 	{
-		delete ptr;
-	}
+	public:
+		//初始化链表头,并初始化值
+		ListNode(T t) {
+			Nodeptr = nullptr;
+			Num = t;
+		};
 
-	ptr = new ListNode<T>;
+	public:
+		ListNode* Nodeptr = nullptr;
+		T Num;
+	};
+public:
+	void InitList() {
+		head = nullptr;
+		ListLength = 0;
+	};
+
+	bool IsEmpty() {
+		if (head == nullptr)
+			return true;
+		else
+			return false;
+	};
+
+	void AddToHead(T t) {
+		if (IsEmpty()) {
+			ListNode* temp = new ListNode(t);
+			head = temp;
+			temp = nullptr;
+		}
+		else {
+			ListNode* temp = new ListNode(t);
+			temp->Nodeptr = head;
+			head = temp;
+			temp = nullptr;
+		}	
+		ListLength += 1;
+	};
+
+	void AddToTail(T t) {
+		ListNode* temp = head;
+		ListNode* end = head;
+		while (temp != nullptr) {
+			temp = temp->Nodeptr;	
+			if (temp != nullptr) {
+				end = temp;
+			}
+			else {
+				temp = new ListNode(t);
+				end->Nodeptr = temp;
+				temp = nullptr;
+			}
+		}
+	};
+
+	void printList() {
+		ListNode* temp = head;
+		cout << "head" << "-->";
+		while (temp != nullptr)
+		{
+			cout << temp->Num << "-->";
+			temp = temp->Nodeptr;
+		}
+	};
+
+private:
+	ListNode* head = nullptr;
+	int ListLength = 0;
 };
-
 
 int main()
 {
-	ListNode<int>* List;
-	InitList(List);
+
+	List<int>list;
+	list.InitList();
+	if (true == list.IsEmpty())
+		cout << "isEmpty" << endl;
+	else
+		cout << "isNotEmpty" << endl;
+	list.AddToHead(1);
+	list.AddToHead(2);
+	list.AddToHead(3);
+	list.AddToTail(5);
+	list.printList();
+	getchar();
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main2()
 {
