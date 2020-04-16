@@ -66,11 +66,15 @@ public:
 
 	void printList() {
 		ListNode* temp = head;
-		cout << "head" << "-->";
+		cout << "Listhead" << "-->";
 		while (temp != nullptr)
 		{
-			cout << temp->Num << "-->";
+			cout << temp->Num;
 			temp = temp->Nodeptr;
+			if (temp != nullptr)
+				cout << "-->";
+			else
+				;
 		}
 	};
 
@@ -82,16 +86,18 @@ private:
 int main()
 {
 
-	List<int>list;
+	List<char>list;
 	list.InitList();
 	if (true == list.IsEmpty())
 		cout << "isEmpty" << endl;
 	else
 		cout << "isNotEmpty" << endl;
-	list.AddToHead(1);
-	list.AddToHead(2);
-	list.AddToHead(3);
-	list.AddToTail(5);
+	list.AddToHead('k');
+	list.AddToHead('c');
+	list.AddToHead('u');
+	list.AddToHead('f');
+	list.AddToTail('u');
+	list.AddToTail('!');
 	list.printList();
 	getchar();
 	return 0;
