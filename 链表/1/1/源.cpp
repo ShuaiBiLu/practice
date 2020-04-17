@@ -1,7 +1,4 @@
 #include<iostream>
-#include<string>
-#include<memory>
-#include<ctime>
 using namespace std;
 
 template<typename T>
@@ -26,12 +23,82 @@ public:
 		ListLength = 0;
 	};
 
+	void clear() {
+		if (IsEmpty())
+			return;
+		else {
+			ListNode* temp = head;
+			while (head != nullptr) {
+				 temp = head->Nodeptr;
+				 delete head;
+				 head = temp;
+			}
+			head = nullptr;
+		}
+		ListLength = 0;
+	}
+
 	bool IsEmpty() {
 		if (head == nullptr)
 			return true;
 		else
 			return false;
 	};
+
+	bool Insert(T t, int p) {
+		if ((p > ListLength) || (p < 1)) {
+			return false;
+		}
+		else {
+			int Num = 1;
+			ListNode* temp = head;
+			if (1 == p) {
+				ListNode* insert = new ListNode(t);
+				insert->Nodeptr = head->Nodeptr;
+				head = insert;
+			}
+			else {
+				while (Num < p) {
+					Num++;
+					if (Num == p) {
+						ListNode* insert = new ListNode(t);
+						insert->Nodeptr = temp->Nodeptr;
+						temp->Nodeptr = insert;
+					}
+					temp = temp->Nodeptr;
+				}
+			}	
+			ListLength += 1;
+			return true;
+		}	
+	}
+
+	bool Delete(int p) {
+		if ((p > ListLength) || (p < 1)) {
+			return false;
+		}
+		else {
+			int Num = 1;
+			ListNode* temp = head;
+			if (1 == p) {
+				head = head->Nodeptr;
+				delete temp;
+			}
+			else {
+				while (Num != p) {
+					Num++;
+					if (Num == p) {			
+						ListNode* deltemp = temp->Nodeptr;
+						temp->Nodeptr = temp->Nodeptr->Nodeptr;
+						delete deltemp;
+					}
+					temp = temp->Nodeptr;
+				}
+			}
+			ListLength -= 1;
+			return true;
+		}
+	}
 
 	void AddToHead(T t) {
 		if (IsEmpty()) {
@@ -51,17 +118,23 @@ public:
 	void AddToTail(T t) {
 		ListNode* temp = head;
 		ListNode* end = head;
-		while (temp != nullptr) {
-			temp = temp->Nodeptr;	
-			if (temp != nullptr) {
-				end = temp;
-			}
-			else {
-				temp = new ListNode(t);
-				end->Nodeptr = temp;
-				temp = nullptr;
+		if (!IsEmpty()) {
+			while (temp != nullptr) {
+				temp = temp->Nodeptr;
+				if (temp != nullptr) {
+					end = temp;
+				}
+				else {
+					temp = new ListNode(t);
+					end->Nodeptr = temp;
+					temp = nullptr;
+				}
 			}
 		}
+		else {
+			head = new ListNode(t);
+		}
+		ListLength += 1;
 	};
 
 	void printList() {
@@ -80,6 +153,7 @@ public:
 
 private:
 	ListNode* head = nullptr;
+	//ListNode* end = nullptr;
 	int ListLength = 0;
 };
 
@@ -99,79 +173,29 @@ int main()
 	list.AddToTail('u');
 	list.AddToTail('!');
 	list.printList();
+	list.clear();
+	cout << endl;
+	list.printList();
+	cout << endl;
+	list.AddToTail('x');
+	list.AddToTail('i');
+	list.AddToTail('a');
+	list.AddToTail('o');
+	list.AddToTail('j');
+	list.AddToTail('i');
+	list.AddToTail('e');
+	list.AddToTail('j');
+	list.AddToTail('i');
+	list.AddToTail('e');
+	list.AddToTail('!');
+	list.Insert('2', 2);
+	list.printList();
+	cout << endl;
+	list.Delete(3);
+	list.printList();
+	list.clear();
+	cout << endl;
+	list.printList();
 	getchar();
-	return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int main2()
-{
-	int i = 0;
-	int arr[3] = { 0 };
-	for (;i <= 3; i++)
-	{
-		arr[i] = 0;
-		printf("hello world!\n");
-	}
-	getchar();
-	return 0;
-}
-int main3()
-{
-	main2();
-	return 0;
-}
-int main1()
-{
-	clock_t start, finish;
-	double duration;
-	int* arr = new int[64 * 1024 * 1024];
-	start = clock();
-	for (int i = 0; i < 64 * 1024 * 1024; i+=4)
-	{
-		arr[i] *= 3;
-	}
-	finish = clock();
-	duration = (double)(finish - start) / CLOCKS_PER_SEC;
-	printf("%f seconds\n", duration);
-	//---------------------------------------------------
-	start = clock();
-	for (int i = 0; i < 64 * 1024 * 1024; i+=16)
-	{
-		arr[i] *= 3;
-	}
-	finish = clock();
-	duration = (double)(finish - start) / CLOCKS_PER_SEC;
-	printf("%f seconds\n", duration);
-	while (1);
 	return 0;
 }
